@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+	#Options +FollowSymLinks
+    #remove access to system folder
+ #	RewriteBase /
+
+    RewriteCond %{REQUEST_URI} ^system.*
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+
+    #check if user is accessing a file or folder that already exists
+    RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ index.php?/$1 [L]
+
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # If we don't have mod_rewrite installed, all 404's
+    # can be sent to index.php and everything works as normal.
+    ErrorDocument 404 /index.php
+</IfModule>
